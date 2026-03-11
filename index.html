@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Should You Get Into Mindfulness? — Paradox of Acceptance</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --border: #e4e2dc;
+  --text: #1a1a18;
+  --text-muted: #6b6966;
+  --accent: #2d5a27;
+  --accent-light: #eef3ec;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Nav ---- */
+nav {
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  padding: 14px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav-brand {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  font-size: 0.8rem;
+  color: #777;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--accent);
+}
+
+/* ---- Progress ---- */
+.progress-track {
+  width: 100%;
+  height: 3px;
+  background: var(--border);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.5s ease;
+}
+
+/* ---- Main ---- */
+main {
+  width: 100%;
+  max-width: 640px;
+  padding: 0 24px;
+  flex: 1;
+}
+
+/* ---- Screens ---- */
+.screen {
+  display: none;
+  min-height: calc(100vh - 100px);
+  padding: 60px 0 80px;
+}
+
+.screen.active {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+.screen.fading {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ---- Typography ---- */
+h1 {
+  font-size: clamp(1.8rem, 4.5vw, 2.4rem);
+  font-weight: normal;
+  line-height: 1.25;
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+  font-weight: normal;
+  line-height: 1.3;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+
+p.muted {
+  color: var(--text-muted);
+}
+
+p.small {
+  font-size: 0.9rem;
+}
+
+/* ---- Step Label ---- */
+.step-label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+/* ---- Question ---- */
+.question-text {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+
+/* ---- Options ---- */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 18px 22px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.option.selected {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn:hover {
+  background: #245020;
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:disabled:hover {
+  background: var(--accent);
+  transform: none;
+}
+
+.back-link {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  margin-bottom: 28px;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+/* ---- Result ---- */
+.result-tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.result-summary {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.result-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+
+.result-section h3 {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.result-section p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.result-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.result-section ul li {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding: 4px 0 4px 20px;
+  position: relative;
+  color: var(--text);
+}
+
+.result-section ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.result-section.reduces ul li::before {
+  background: var(--accent);
+}
+
+.result-section.weakens ul li::before {
+  background: #b5895a;
+}
+
+.dosage-box {
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.dosage-box h3 {
+  margin-bottom: 8px;
+}
+
+.dosage-box p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.caution-box {
+  background: #faf6ef;
+  border-left: 3px solid #b5895a;
+  border-radius: 0 10px 10px 0;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.caution-box h3 {
+  color: #8a6a3a;
+  margin-bottom: 8px;
+}
+
+.caution-box p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+/* ---- Links Grid ---- */
+.links-section {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.links-section h3 {
+  margin-bottom: 16px;
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.links-grid a {
+  display: block;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.links-grid a:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.restart-link {
+  display: inline-block;
+  margin-top: 28px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.restart-link:hover {
+  color: var(--accent);
+}
+
+/* ---- Footer ---- */
+footer {
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding: 40px 24px;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  main { padding: 0 20px; }
+  .screen { padding: 40px 0 60px; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+  .option { padding: 14px 18px; font-size: 0.9rem; }
+  .links-grid { grid-template-columns: 1fr; }
+  .result-section { padding: 20px 22px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="nav-brand">Paradox of Acceptance</div>
+    <div class="nav-links">
+      <a href="https://nickxma.github.io/paradox-of-acceptance/">Home</a>
+      <a href="https://nickxma.github.io/meditation-quiz/">Quiz</a>
+      <a href="https://nickxma.github.io/meditation-debates/">Debates</a>
+      <a href="https://nickxma.github.io/meditation-recommender/">Recommender</a>
+      <a href="https://nickxma.github.io/teacher-debates/">Teachers</a>
+      <a href="https://nickxma.github.io/concept-explorer/">Explorer</a>
+      <a href="https://nickxma.github.io/mindfulness-fit/" class="active">Fit</a>
+    </div>
+  </div>
+</nav>
+
+<div class="progress-track"><div class="progress-bar" id="progress"></div></div>
+
+<main>
+
+  <!-- ===== INTRO ===== -->
+  <div class="screen active" id="intro">
+    <h1>Should You Get Into Mindfulness?</h1>
+    <p>Most mindfulness content assumes the answer is yes. This tool doesn't.</p>
+    <p>Mindfulness shifts emphasis away from identity-driven narrative toward moment-to-moment perception. Depending on whether narrative is currently helping or hurting you, that shift can be useful or costly.</p>
+    <p class="muted">Six questions. No account required. About two minutes.</p>
+    <button class="btn" onclick="startQuiz()">Begin</button>
+  </div>
+
+  <!-- ===== QUESTIONS ===== -->
+  <div class="screen" id="quiz"></div>
+
+  <!-- ===== RESULT ===== -->
+  <div class="screen" id="result"></div>
+
+</main>
+
+<footer>
+  Part of the <a href="https://nickxma.github.io/paradox-of-acceptance/">Paradox of Acceptance</a> toolkit. These tools draw on a wide survey of contemplative teachers and traditions.
+</footer>
+
+<script>
+// ---- Data ----
+const questions = [
+  {
+    text: "How much does your inner monologue interfere with your daily life?",
+    options: [
+      { text: "It\u2019s constant \u2014 loops of worry, self-criticism, replaying conversations.", gain: 3, cost: 0 },
+      { text: "It flares up under stress but I can usually manage it.", gain: 2, cost: 0 },
+      { text: "It\u2019s there but doesn\u2019t really bother me.", gain: 1, cost: 0 },
+      { text: "I don\u2019t have much mental noise. Things are pretty calm.", gain: 0, cost: 0 }
+    ]
+  },
+  {
+    text: "What\u2019s your main reason for considering mindfulness?",
+    options: [
+      { text: "I want relief from anxiety, rumination, or overwhelm.", gain: 3, cost: 0 },
+      { text: "I\u2019m curious about the nature of awareness and experience.", gain: 1, cost: 0 },
+      { text: "I want better focus, clarity, or a competitive edge.", gain: 1, cost: 2 },
+      { text: "I\u2019m already stable. Just exploring.", gain: 0, cost: 0 }
+    ]
+  },
+  {
+    text: "When you think about your ambitions, what fuels them?",
+    options: [
+      { text: "Fear of failure, of falling behind, of being judged.", gain: 1, cost: 3 },
+      { text: "A need to prove something \u2014 to myself or others.", gain: 0, cost: 2 },
+      { text: "Genuine interest in the work itself.", gain: 0, cost: 0 },
+      { text: "I\u2019m not that driven right now. Motivation is low.", gain: 0, cost: 1 }
+    ]
+  },
+  {
+    text: "If a teacher told you \u201Ceverything is already fine as it is,\u201D how would that land?",
+    options: [
+      { text: "That\u2019s disconnected from reality. Things are not fine.", gain: 2, cost: 0 },
+      { text: "Part of me resists it. Part of me wants it to be true.", gain: 1, cost: 1 },
+      { text: "That sounds deeply appealing.", gain: 0, cost: 1 },
+      { text: "I already feel that way. Maybe too much so.", gain: 0, cost: 2 }
+    ]
+  },
+  {
+    text: "How do you relate to long-term goals and discipline?",
+    options: [
+      { text: "I push through discomfort now for future payoff. That\u2019s my engine.", gain: 0, cost: 3 },
+      { text: "I try, but I lose steam when the payoff feels distant.", gain: 1, cost: 1 },
+      { text: "I focus on what feels meaningful right now, not distant rewards.", gain: 0, cost: 0 },
+      { text: "I\u2019m probably too comfortable with letting things slide.", gain: 0, cost: 2 }
+    ]
+  },
+  {
+    text: "Have you ever felt \u201Ctoo at peace\u201D \u2014 like calm was making you less effective?",
+    options: [
+      { text: "No. More peace sounds like exactly what I need.", gain: 2, cost: 0 },
+      { text: "I haven\u2019t practiced enough for that to be relevant.", gain: 1, cost: 0 },
+      { text: "Maybe. I\u2019ve noticed I care less about things that used to drive me.", gain: 0, cost: 2 },
+      { text: "Yes. The motivation drain is real and it concerns me.", gain: 0, cost: 3 }
+    ]
+  }
+];
+
+const results = {
+  netGain: {
+    tag: "Likely net gain",
+    title: "Mindfulness is probably a good fit right now.",
+    summary: "You\u2019re describing a baseline where there\u2019s significant mental noise to reduce, and your motivation doesn\u2019t depend heavily on the emotional patterns that practice tends to quiet. The expected benefit is real.",
+    reduces: [
+      "Rumination loops and self-critical narrative",
+      "Anxiety about the future",
+      "Reactive decision-making under stress",
+      "The gap between how things are and how your mind says they should be"
+    ],
+    weakens: [
+      "Some urgency \u2014 the emotional volume that sometimes pushes you to act may get turned down along with the noise",
+      "Intensity of experience \u2014 not just the bad kind"
+    ],
+    dosage: "Good candidate for a sustained daily practice \u2014 guided instruction, breath and body awareness, present-moment attention. Non-dual approaches (recognizing awareness itself) may be worthwhile once the basics are stable. There\u2019s room to go deep here.",
+    caution: "Even with a favorable baseline, notice what changes alongside the relief. If your engagement with long-term goals starts softening, that\u2019s information \u2014 not failure. The practice doesn\u2019t come with a dashboard that separates the noise it\u2019s reducing from the signal.",
+    next: "Start with a structured program \u2014 an app, a course, a teacher. Commit to 30 days before assessing. Pay attention to what gets quieter, and whether anything useful gets quieter too."
+  },
+  mixed: {
+    tag: "Mixed tradeoff",
+    title: "There\u2019s something to gain \u2014 and something to lose.",
+    summary: "You\u2019re describing a situation where mindfulness would likely reduce some things you want reduced, but it may also weaken things you\u2019re currently relying on. This isn\u2019t a reason not to practice. It\u2019s a reason to be deliberate about how much and what kind.",
+    reduces: [
+      "Stress reactivity and narrative looping",
+      "Self-referential anxiety",
+      "Difficulty being present when it matters"
+    ],
+    weakens: [
+      "Identity-based urgency \u2014 the drive that comes from needing to prove something",
+      "Competitive fuel \u2014 the emotional edge that pushes you through hard things",
+      "The felt stakes that make long-term sacrifice feel worth it"
+    ],
+    dosage: "Conventional mindfulness at moderate doses \u2014 focused attention, body-based awareness, stress reduction. Be cautious with strong non-dual emphases (\u201Ceverything is already perfect,\u201D \u201Cthere\u2019s nothing to do\u201D) until you\u2019ve assessed the tradeoff for yourself. Less is fine. You can always go deeper later.",
+    caution: "Watch for the motivation shift. If you start noticing that hard things feel less urgent \u2014 not less stressful, but less important \u2014 pay attention. That may be insight, or it may be the practice dissolving fuel you still need. The mindfulness world doesn\u2019t have great language for this distinction.",
+    next: "Start light. Daily practice of 10\u201315 minutes, focused on stress management rather than worldview transformation. Reassess after 60 days: is it helping with what you wanted, and is anything else changing that you didn\u2019t expect?"
+  },
+  highRisk: {
+    tag: "High tradeoff risk",
+    title: "Your motivation runs on what mindfulness dissolves.",
+    summary: "Based on your answers, your current drive depends significantly on identity-based patterns \u2014 fear of failure, ego-driven urgency, the felt stakes of achievement. These are exactly the structures that serious mindfulness practice tends to quiet. That doesn\u2019t mean you shouldn\u2019t practice. It means the cost\u2013benefit math is less obvious than most mindfulness content implies.",
+    reduces: [
+      "Anxiety and defensiveness",
+      "Ego reactivity and status-driven stress",
+      "The mental noise around identity and performance"
+    ],
+    weakens: [
+      "The competitive edge \u2014 the thing that makes you outwork people",
+      "Identity fuel \u2014 the sense that who you are depends on what you achieve",
+      "The urgency that converts long-term goals into daily action",
+      "The emotional intensity that makes sacrifice feel meaningful"
+    ],
+    dosage: "If you practice, keep it light and functional \u2014 stress management, not identity transformation. Avoid heavy non-dual emphasis, long silent retreats, or frameworks built around \u201Calready perfect.\u201D These directly target the motivational structures you\u2019re currently using. Treat mindfulness like a tool, not a path.",
+    caution: "The mindfulness world will tell you that ego-driven motivation is suffering and should be released. Maybe eventually. But right now it\u2019s also what\u2019s working. Be skeptical of any framework that treats your ambition as a problem to be solved and offers no replacement engine.",
+    next: "Consider whether the specific thing you want to address \u2014 stress, reactivity, sleep \u2014 can be handled with lighter tools first: exercise, therapy, better recovery. These don\u2019t restructure your relationship to ambition. If you do practice, start with focused-attention meditation (not open awareness or non-dual), and keep sessions short."
+  },
+  lowUpside: {
+    tag: "Not the right time",
+    title: "There\u2019s not much here for mindfulness to solve.",
+    summary: "You\u2019re not describing much suffering that needs reducing, and you\u2019re not reporting the kind of mental noise that practice is designed to address. Mindfulness might offer some interesting perceptual shifts, but the expected return is low relative to the time investment. That\u2019s not a criticism \u2014 it\u2019s just an honest read of the fit.",
+    reduces: [
+      "Minor perceptual noise",
+      "Small reactive habits you may not even notice"
+    ],
+    weakens: [
+      "Hard to say with certainty \u2014 but if your motivation is already low, a practice that emphasizes \u201Ceverything is fine as it is\u201D could make inertia worse, not better"
+    ],
+    dosage: "No rush. If you\u2019re genuinely curious, try a short course or a few guided sessions. Don\u2019t commit to a heavy practice without a clear reason. Curiosity is a fine reason to explore. Obligation is not.",
+    caution: "\u201CI should meditate\u201D is itself a narrative. If the impulse is duty rather than need, the practice is less likely to land. Come back when something actually hurts, or when genuine curiosity pulls you in \u2014 not before.",
+    next: "Bookmark this. Revisit when your situation shifts \u2014 a period of high stress, a life transition, a genuine question about the nature of your experience. Mindfulness tends to land best when it meets a real need."
+  }
+};
+
+// ---- State ----
+let currentQ = 0;
+let answers = [];
+const progressBar = document.getElementById('progress');
+
+// ---- Functions ----
+function updateProgress() {
+  const pct = currentQ === 0 ? 0 : (currentQ / questions.length) * 100;
+  progressBar.style.width = pct + '%';
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    if (s.classList.contains('active')) {
+      s.classList.add('fading');
+      setTimeout(() => {
+        s.classList.remove('active', 'fading');
+        document.getElementById(id).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
+    }
+  });
+}
+
+function startQuiz() {
+  currentQ = 0;
+  answers = [];
+  renderQuestion();
+  showScreen('quiz');
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const quiz = document.getElementById('quiz');
+
+  let html = '';
+  if (currentQ > 0) {
+    html += '<a class="back-link" onclick="prevQuestion()">&#8592; Back</a>';
+  }
+  html += '<div class="step-label">' + (currentQ + 1) + ' of ' + questions.length + '</div>';
+  html += '<p class="question-text">' + q.text + '</p>';
+  html += '<div class="options">';
+  q.options.forEach((opt, i) => {
+    const sel = answers[currentQ] === i ? ' selected' : '';
+    html += '<button class="option' + sel + '" onclick="selectOption(' + i + ')">' + opt.text + '</button>';
+  });
+  html += '</div>';
+
+  quiz.innerHTML = html;
+  updateProgress();
+}
+
+function selectOption(i) {
+  answers[currentQ] = i;
+
+  // Brief visual feedback then advance
+  const opts = document.querySelectorAll('.option');
+  opts.forEach((o, idx) => {
+    o.classList.toggle('selected', idx === i);
+  });
+
+  setTimeout(() => {
+    if (currentQ < questions.length - 1) {
+      currentQ++;
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }, 250);
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function showResult() {
+  // Score
+  let gain = 0, cost = 0;
+  answers.forEach((ansIdx, qIdx) => {
+    const opt = questions[qIdx].options[ansIdx];
+    gain += opt.gain;
+    cost += opt.cost;
+  });
+
+  // Categorize
+  let category;
+  if (gain >= 7 && cost <= 3) {
+    category = 'netGain';
+  } else if (gain >= 5 && cost >= 4) {
+    category = 'mixed';
+  } else if (gain <= 4 && cost >= 5) {
+    category = 'highRisk';
+  } else if (gain <= 4 && cost <= 4) {
+    // Distinguish: if cost > gain, lean toward highRisk for moderate scores
+    if (cost > gain && cost >= 4) {
+      category = 'highRisk';
+    } else {
+      category = 'lowUpside';
+    }
+  } else {
+    // gain 5-6, cost 0-3: moderate gain, low cost → netGain
+    category = 'netGain';
+  }
+
+  const r = results[category];
+
+  // Update progress to 100%
+  progressBar.style.width = '100%';
+
+  // Render
+  const el = document.getElementById('result');
+  let html = '';
+  html += '<div class="result-tag">' + r.tag + '</div>';
+  html += '<h2>' + r.title + '</h2>';
+  html += '<p class="result-summary">' + r.summary + '</p>';
+
+  html += '<div class="result-section reduces"><h3>What mindfulness may reduce</h3><ul>';
+  r.reduces.forEach(item => { html += '<li>' + item + '</li>'; });
+  html += '</ul></div>';
+
+  html += '<div class="result-section weakens"><h3>What it may also weaken</h3><ul>';
+  r.weakens.forEach(item => { html += '<li>' + item + '</li>'; });
+  html += '</ul></div>';
+
+  html += '<div class="dosage-box"><h3>Dosage suggestion</h3><p>' + r.dosage + '</p></div>';
+  html += '<div class="caution-box"><h3>Caution</h3><p>' + r.caution + '</p></div>';
+
+  html += '<div class="result-section"><h3>Suggested next step</h3><p>' + r.next + '</p></div>';
+
+  html += '<div class="links-section"><h3>Keep exploring</h3>';
+  html += '<div class="links-grid">';
+  html += '<a href="https://nickxma.github.io/concept-explorer/">The nature of experience</a>';
+  html += '<a href="https://nickxma.github.io/meditation-debates/">5 debates the field can\u2019t settle</a>';
+  html += '<a href="https://nickxma.github.io/meditation-quiz/">What kind of meditator are you?</a>';
+  html += '<a href="https://nickxma.github.io/meditation-recommender/">What should I actually practice?</a>';
+  html += '</div>';
+  html += '<a class="restart-link" onclick="restart()">Take it again</a>';
+  html += '</div>';
+
+  el.innerHTML = html;
+  showScreen('result');
+}
+
+function restart() {
+  currentQ = 0;
+  answers = [];
+  progressBar.style.width = '0%';
+  document.getElementById('intro').classList.add('active');
+  document.getElementById('result').classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
