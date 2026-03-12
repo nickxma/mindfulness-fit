@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Should You Get Into Mindfulness? — Paradox of Acceptance</title>
+<meta name="description" content="Six questions to figure out whether mindfulness is likely to help more than it costs, given your specific situation.">
+<meta property="og:title" content="Should You Get Into Mindfulness?">
+<meta property="og:description" content="Most mindfulness content assumes the answer is yes. This tool asks six honest questions about your baseline, your motivation, and what you're hoping to change.">
+<meta property="og:type" content="website">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -165,18 +169,93 @@ p.small {
   font-size: 0.9rem;
 }
 
-/* ---- Step Label ---- */
-.step-label {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
+/* ---- Question ---- */
+.question-scenario {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-muted);
   margin-bottom: 24px;
 }
 
-/* ---- Question ---- */
+.step-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.4s ease;
+}
+
+.step-dot.completed {
+  background: var(--accent);
+}
+
+.step-dot.current {
+  background: var(--accent);
+  transform: scale(1.4);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.insight-bar {
+  margin-top: 20px;
+  padding: 16px 20px;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-muted);
+  border-left: 2px solid var(--accent);
+  animation: insightIn 0.35s ease;
+}
+
+@keyframes insightIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.options.answered .option:not(.selected) {
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.options.answered .option.selected {
+  pointer-events: none;
+}
+
+.reflection-section {
+  margin-bottom: 28px;
+}
+
+.reflection-section h3 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.reflection-item {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text);
+  padding: 8px 0 8px 16px;
+  border-left: 2px solid var(--accent-light);
+  margin-bottom: 8px;
+}
+
+.reflection-item:last-child {
+  margin-bottom: 0;
+}
+
 .question-text {
   font-size: 1.15rem;
   line-height: 1.5;
@@ -460,6 +539,11 @@ footer a:hover {
   .screen { padding: 40px 0 60px; }
   h1 { font-size: 1.6rem; }
   h2 { font-size: 1.3rem; }
+  .question-scenario { font-size: 0.88rem; }
+  .step-dots { gap: 8px; margin-bottom: 28px; }
+  .step-dot { width: 7px; height: 7px; }
+  .insight-bar { font-size: 0.85rem; padding: 14px 16px; }
+  .reflection-item { font-size: 0.85rem; }
   .option { padding: 14px 18px; font-size: 0.9rem; }
   .links-grid { grid-template-columns: 1fr; }
   .result-section { padding: 20px 22px; }
@@ -490,9 +574,10 @@ footer a:hover {
   <!-- ===== INTRO ===== -->
   <div class="screen active" id="intro">
     <h1>Should You Get Into Mindfulness?</h1>
-    <p>Most mindfulness content assumes the answer is yes. This tool doesn't.</p>
-    <p>Mindfulness shifts emphasis away from identity-driven narrative toward moment-to-moment perception. Depending on whether narrative is currently helping or hurting you, that shift can be useful or costly.</p>
-    <p class="muted">Six questions. No account required. About two minutes.</p>
+    <p>Most mindfulness content assumes the answer is yes. This doesn't.</p>
+    <p>Mindfulness quiets certain mental patterns — rumination, self-criticism, anxiety about the future. But it doesn't discriminate. It quiets the patterns you want gone and the ones you're still using.</p>
+    <p>This tool asks six questions to figure out which side of that tradeoff you're on. Not whether mindfulness <em>works</em> — it does. Whether it's likely to help more than it costs, given your specific situation.</p>
+    <p class="muted">Six questions. No account. About three minutes.</p>
     <button class="btn" onclick="startQuiz()">Begin</button>
   </div>
 
@@ -512,57 +597,69 @@ footer a:hover {
 // ---- Data ----
 const questions = [
   {
-    text: "How much does your inner monologue interfere with your daily life?",
+    scenario: "You\u2019re lying in bed. Or half-listening in a conversation. Or driving somewhere you\u2019ve been a hundred times. Nothing demands your attention \u2014 so your mind fills the space on its own.",
+    text: "How much does involuntary mental chatter show up in your day?",
     options: [
-      { text: "It\u2019s constant \u2014 loops of worry, self-criticism, replaying conversations.", gain: 3, cost: 0 },
-      { text: "It flares up under stress but I can usually manage it.", gain: 2, cost: 0 },
-      { text: "It\u2019s there but doesn\u2019t really bother me.", gain: 1, cost: 0 },
-      { text: "I don\u2019t have much mental noise. Things are pretty calm.", gain: 0, cost: 0 }
+      { text: "It\u2019s constant \u2014 loops of worry, self-criticism, replaying conversations. I can\u2019t turn it off.", gain: 3, cost: 0, insight: "High mental noise is where mindfulness has its clearest, most measurable benefit.", reflection: "Your inner monologue is constant and hard to turn off" },
+      { text: "It flares up under stress, but most days I can steer my attention where I want it.", gain: 2, cost: 0, insight: "Stress-triggered noise is common. Practice tends to widen the gap between trigger and reaction.", reflection: "Your mental chatter flares under stress but is manageable most days" },
+      { text: "There\u2019s a background hum, but it doesn\u2019t hijack me.", gain: 1, cost: 0, insight: "Some baseline chatter is normal. The question is whether it\u2019s costing you anything you\u2019d notice.", reflection: "You have background noise but it doesn\u2019t interfere much" },
+      { text: "Quiet, mostly. I don\u2019t experience much involuntary mental noise.", gain: 0, cost: 0, insight: "Low noise means less obvious upside from practice \u2014 though there may be subtler layers worth noticing.", reflection: "Your mind is mostly quiet" },
+      { text: "I\u2019ve never really paid attention to this. I\u2019m not sure what my mind does in those moments.", gain: 1, cost: 0, insight: "That\u2019s worth noticing. Paying attention to what your mind does unprompted is already the start of the practice.", reflection: "You haven\u2019t paid close attention to your own mental chatter" }
     ]
   },
   {
-    text: "What\u2019s your main reason for considering mindfulness?",
+    scenario: "Something brought you to a page called <em>Should You Get Into Mindfulness?</em> \u2014 which is already unusual. Most people either practice or they don\u2019t. They don\u2019t stop to ask the question.",
+    text: "What brought you here?",
     options: [
-      { text: "I want relief from anxiety, rumination, or overwhelm.", gain: 3, cost: 0 },
-      { text: "I\u2019m curious about the nature of awareness and experience.", gain: 1, cost: 0 },
-      { text: "I want better focus, clarity, or a competitive edge.", gain: 1, cost: 2 },
-      { text: "I\u2019m already stable. Just exploring.", gain: 0, cost: 0 }
+      { text: "I want relief from something specific \u2014 anxiety, rumination, overwhelm, trouble sleeping.", gain: 3, cost: 0, insight: "Concrete suffering is the strongest entry point. Practice has the most traction when it meets a real need.", reflection: "You\u2019re looking for relief from something specific" },
+      { text: "I\u2019m curious about awareness, attention, the nature of experience. Something philosophical.", gain: 1, cost: 0, insight: "Philosophical curiosity is a different starting point than pain \u2014 and leads to a different kind of practice.", reflection: "You\u2019re philosophically curious about the nature of experience" },
+      { text: "I want a performance edge \u2014 better focus, more clarity, less wasted mental energy.", gain: 1, cost: 2, insight: "Nothing wrong with wanting an edge. But the tool you\u2019re reaching for may change you in ways the performance frame doesn\u2019t predict.", reflection: "You\u2019re looking for a performance edge" },
+      { text: "I\u2019m browsing. Someone sent me this link, or I clicked through from something else.", gain: 0, cost: 0, insight: "Fair enough. Let\u2019s see if anything here resonates.", reflection: "You\u2019re browsing without a specific question" },
+      { text: "I\u2019m not sure, honestly. Something about it felt relevant but I can\u2019t pin it down.", gain: 1, cost: 0, insight: "Sometimes the most honest reasons are the hardest to name. That\u2019s fine \u2014 the questions will help clarify.", reflection: "Something felt relevant but you can\u2019t quite name it" }
     ]
   },
   {
-    text: "When you think about your ambitions, what fuels them?",
+    scenario: "Two people are working toward the same goal \u2014 a difficult project that requires months of sustained effort.<br><br>Alice does the work because she finds the work itself interesting. When it gets hard, she\u2019s still curious enough to keep going.<br><br>Bob does the work because he\u2019s afraid of what it means about him if he doesn\u2019t. When it gets hard, the fear of failure is louder than the discomfort of doing.<br><br>Most people are some mix.",
+    text: "When you think about what fuels your ambition, where do you fall?",
     options: [
-      { text: "Fear of failure, of falling behind, of being judged.", gain: 1, cost: 3 },
-      { text: "A need to prove something \u2014 to myself or others.", gain: 0, cost: 2 },
-      { text: "Genuine interest in the work itself.", gain: 0, cost: 0 },
-      { text: "I\u2019m not that driven right now. Motivation is low.", gain: 0, cost: 1 }
+      { text: "Closer to Bob \u2014 fear of falling behind, being judged, or failing is a big part of what moves me.", gain: 1, cost: 3, insight: "Fear-based motivation is effective. It\u2019s also exactly what serious practice tends to quiet.", reflection: "Your ambition runs significantly on fear-based fuel" },
+      { text: "Bob, but I\u2019d frame it differently. Less fear, more a need to prove something \u2014 to myself or others.", gain: 0, cost: 2, insight: "The proving impulse is a close cousin of fear. Practice often dissolves both together.", reflection: "You\u2019re driven by a need to prove something" },
+      { text: "Closer to Alice. I\u2019m drawn to the work itself and lose interest when it stops being interesting.", gain: 0, cost: 0, insight: "Intrinsic motivation is more durable under practice \u2014 it doesn\u2019t depend on the structures mindfulness weakens.", reflection: "You\u2019re intrinsically motivated by the work itself" },
+      { text: "Neither, honestly. I\u2019m not that driven right now. Motivation is more of a problem than a fuel source.", gain: 0, cost: 1, insight: "Low motivation is its own signal. Practice can sometimes clarify what matters \u2014 but it can also make inertia comfortable.", reflection: "Motivation is low \u2014 drive isn\u2019t really the issue" },
+      { text: "This is too binary. My motivation depends on the project and the season of life I\u2019m in.", gain: 0, cost: 1, insight: "Most people are a mix, and the mix shifts. What matters is which fuel your hardest pushes depend on.", reflection: "Your motivation source shifts depending on context" }
     ]
   },
   {
-    text: "If a teacher told you \u201Ceverything is already fine as it is,\u201D how would that land?",
+    scenario: "Imagine you\u2019re going through something hard \u2014 a stressful period at work, a relationship that\u2019s not working, a goal that keeps slipping. Someone you respect looks at you and says:",
+    text: "\u201CEverything is already fine as it is. You can stop struggling.\u201D \u2014 How does that land?",
     options: [
-      { text: "That\u2019s disconnected from reality. Things are not fine.", gain: 2, cost: 0 },
-      { text: "Part of me resists it. Part of me wants it to be true.", gain: 1, cost: 1 },
-      { text: "That sounds deeply appealing.", gain: 0, cost: 1 },
-      { text: "I already feel that way. Maybe too much so.", gain: 0, cost: 2 }
+      { text: "That\u2019s disconnected from reality. Things are not fine, and saying so feels dismissive.", gain: 2, cost: 0, insight: "That resistance is informative. You\u2019re not looking for permission to stop \u2014 you\u2019re looking for help while you keep going.", reflection: "You reject \u201Ceverything is fine\u201D \u2014 it feels dismissive" },
+      { text: "Part of me resists it. Part of me wants it to be true. Depends on the day.", gain: 1, cost: 1, insight: "That split is the tension the whole practice lives inside.", reflection: "You\u2019re split \u2014 part resistance, part longing" },
+      { text: "That sounds deeply appealing \u2014 the permission to stop struggling is exactly what I want.", gain: 0, cost: 1, insight: "The appeal itself is worth examining. Relief and avoidance can feel identical from the inside.", reflection: "The permission to stop struggling sounds deeply appealing" },
+      { text: "I already kind of feel that way. Maybe too much \u2014 it\u2019s hard to care about things the way I used to.", gain: 0, cost: 2, insight: "If acceptance already comes easy, the question becomes: is it serving you, or insulating you?", reflection: "You already feel that way \u2014 maybe too much" },
+      { text: "I\u2019d need to know what they mean by \u2018fine.\u2019 That word is doing a lot of work.", gain: 1, cost: 0, insight: "Good instinct. Most mindfulness frameworks use \u2018fine\u2019 to mean something very specific \u2014 and rarely spell it out.", reflection: "You\u2019d want to interrogate what \u2018fine\u2019 actually means" }
     ]
   },
   {
-    text: "How do you relate to long-term goals and discipline?",
+    scenario: "Back to Alice and Bob. It\u2019s a Wednesday night. Both have a goal that\u2019s months away. The work in front of them is tedious but necessary.<br><br>Bob sits down and does it. The math is simple: present sacrifice, future reward. The thought of the version of himself who didn\u2019t do the work is enough to keep going.<br><br>Alice pauses. Not because she\u2019s lazy \u2014 because she knows that if she skips it, she\u2019ll arrive in that future moment and be able to begin again. The suffering Bob fears? She knows how to dissolve it.",
+    text: "When it comes to long-term discipline, who do you relate to more?",
     options: [
-      { text: "I push through discomfort now for future payoff. That\u2019s my engine.", gain: 0, cost: 3 },
-      { text: "I try, but I lose steam when the payoff feels distant.", gain: 1, cost: 1 },
-      { text: "I focus on what feels meaningful right now, not distant rewards.", gain: 0, cost: 0 },
-      { text: "I\u2019m probably too comfortable with letting things slide.", gain: 0, cost: 2 }
+      { text: "Bob. I push through discomfort because the future payoff matters. That\u2019s my engine.", gain: 0, cost: 3, insight: "This engine works. But it runs on the same fuel mindfulness targets. That\u2019s the core tradeoff.", reflection: "You push through discomfort for future payoff \u2014 that\u2019s your engine" },
+      { text: "Bob, but I\u2019m worse at it \u2014 I try to push through but lose steam when the payoff feels distant.", gain: 1, cost: 1, insight: "The fear is there but not always enough. Practice could help with the stress \u2014 or erode the remaining drive.", reflection: "You try to push through but lose steam" },
+      { text: "Alice, sort of. I focus on what feels meaningful now. If a goal requires sustained suffering, I question the goal.", gain: 0, cost: 0, insight: "Questioning goals that require suffering is either wisdom or avoidance. Practice doesn\u2019t always help you tell the difference.", reflection: "You question goals that require sustained suffering" },
+      { text: "Neither. I\u2019m probably too comfortable letting things slide, and I know it.", gain: 0, cost: 2, insight: "If inertia is already the pattern, a practice built around acceptance may reinforce it rather than resolve it.", reflection: "You\u2019re probably too comfortable with inertia" },
+      { text: "Both sound like they have problems. Bob\u2019s grinding on fear and Alice might be rationalizing.", gain: 1, cost: 1, insight: "You\u2019re seeing the paradox clearly. That\u2019s actually what this whole project is about.", reflection: "You see problems with both the fear-driven and acceptance-driven approach" }
     ]
   },
   {
-    text: "Have you ever felt \u201Ctoo at peace\u201D \u2014 like calm was making you less effective?",
+    scenario: "Some people who practice meditation report something unexpected: the calm they wanted starts to arrive, but it brings company. Things that used to feel urgent don\u2019t anymore. Not just the stress \u2014 the ambition, the edge, the felt importance of their goals. It all gets quieter together.",
+    text: "Has anything like that ever happened to you?",
     options: [
-      { text: "No. More peace sounds like exactly what I need.", gain: 2, cost: 0 },
-      { text: "I haven\u2019t practiced enough for that to be relevant.", gain: 1, cost: 0 },
-      { text: "Maybe. I\u2019ve noticed I care less about things that used to drive me.", gain: 0, cost: 2 },
-      { text: "Yes. The motivation drain is real and it concerns me.", gain: 0, cost: 3 }
+      { text: "No. More peace sounds like exactly what I need right now.", gain: 2, cost: 0, insight: "When the noise is loud enough, the tradeoff math is simple. Get the relief first.", reflection: "More peace is what you need \u2014 no sign of the motivation tradeoff" },
+      { text: "I haven\u2019t practiced enough for that to be relevant, but it\u2019s an interesting warning.", gain: 1, cost: 0, insight: "Good to know about early. Not everyone experiences this \u2014 but enough do that it\u2019s worth watching for.", reflection: "You haven\u2019t practiced enough for this to be relevant yet" },
+      { text: "Maybe. I\u2019ve noticed I care less about things that used to drive me, and I\u2019m not sure if that\u2019s growth or loss.", gain: 0, cost: 2, insight: "This is the shift the mindfulness world doesn\u2019t have great language for \u2014 when calm and apathy feel the same.", reflection: "You\u2019ve noticed caring less \u2014 and you\u2019re not sure if that\u2019s growth or loss" },
+      { text: "Yes. The motivation drain is real and it concerns me.", gain: 0, cost: 3, insight: "You\u2019ve already experienced the core tradeoff this tool is designed to surface. That\u2019s valuable data.", reflection: "The motivation drain is something you\u2019ve experienced and it concerns you" },
+      { text: "I\u2019ve felt calmer, but I wouldn\u2019t say it\u2019s cost me anything. The things that matter still matter.", gain: 1, cost: 0, insight: "That\u2019s the best-case outcome \u2014 and it\u2019s genuinely how it works for some people.", reflection: "You\u2019ve felt calmer without losing what matters" }
     ]
   }
 ];
@@ -643,6 +740,8 @@ const results = {
 // ---- State ----
 let currentQ = 0;
 let answers = [];
+let advanceTimeout = null;
+let lastCategory = '';
 const progressBar = document.getElementById('progress');
 
 // ---- Functions ----
@@ -679,7 +778,20 @@ function renderQuestion() {
   if (currentQ > 0) {
     html += '<a class="back-link" onclick="prevQuestion()">&#8592; Back</a>';
   }
-  html += '<div class="step-label">' + (currentQ + 1) + ' of ' + questions.length + '</div>';
+
+  // Step dots
+  html += '<div class="step-dots">';
+  for (let i = 0; i < questions.length; i++) {
+    let cls = 'step-dot';
+    if (i < currentQ) cls += ' completed';
+    else if (i === currentQ) cls += ' current';
+    html += '<div class="' + cls + '"></div>';
+  }
+  html += '</div>';
+
+  if (q.scenario) {
+    html += '<div class="question-scenario">' + q.scenario + '</div>';
+  }
   html += '<p class="question-text">' + q.text + '</p>';
   html += '<div class="options">';
   q.options.forEach((opt, i) => {
@@ -693,15 +805,36 @@ function renderQuestion() {
 }
 
 function selectOption(i) {
+  if (advanceTimeout) return;
+
   answers[currentQ] = i;
 
-  // Brief visual feedback then advance
   const opts = document.querySelectorAll('.option');
   opts.forEach((o, idx) => {
     o.classList.toggle('selected', idx === i);
   });
 
-  setTimeout(() => {
+  // Dim unselected options
+  document.querySelector('.options').classList.add('answered');
+
+  // Show insight
+  const q = questions[currentQ];
+  const insight = q.options[i].insight;
+  const existing = document.querySelector('.insight-bar');
+  if (existing) existing.remove();
+
+  if (insight) {
+    const bar = document.createElement('div');
+    bar.className = 'insight-bar';
+    bar.textContent = insight;
+    document.querySelector('.options').after(bar);
+  }
+
+  // Longer pause on last question before results
+  const delay = (currentQ < questions.length - 1) ? 1400 : 2000;
+
+  advanceTimeout = setTimeout(() => {
+    advanceTimeout = null;
     if (currentQ < questions.length - 1) {
       currentQ++;
       renderQuestion();
@@ -709,10 +842,14 @@ function selectOption(i) {
     } else {
       showResult();
     }
-  }, 250);
+  }, delay);
 }
 
 function prevQuestion() {
+  if (advanceTimeout) {
+    clearTimeout(advanceTimeout);
+    advanceTimeout = null;
+  }
   if (currentQ > 0) {
     currentQ--;
     renderQuestion();
@@ -749,16 +886,46 @@ function showResult() {
     category = 'netGain';
   }
 
+  lastCategory = category;
   const r = results[category];
 
   // Update progress to 100%
   progressBar.style.width = '100%';
 
+  // Collect reflections — pick the 3 most diagnostic (highest combined score)
+  let reflections = [];
+  answers.forEach((ansIdx, qIdx) => {
+    const opt = questions[qIdx].options[ansIdx];
+    if (opt.reflection) {
+      reflections.push({ text: opt.reflection, weight: opt.gain + opt.cost });
+    }
+  });
+  reflections.sort((a, b) => b.weight - a.weight);
+  const topReflections = reflections.slice(0, 3).filter(ref => ref.weight > 0);
+
   // Render
   const el = document.getElementById('result');
   let html = '';
+
+  // Step dots — all completed
+  html += '<div class="step-dots" style="margin-bottom: 28px;">';
+  for (let i = 0; i < questions.length; i++) {
+    html += '<div class="step-dot completed"></div>';
+  }
+  html += '</div>';
+
   html += '<div class="result-tag">' + r.tag + '</div>';
   html += '<h2>' + r.title + '</h2>';
+
+  // What you told us
+  if (topReflections.length > 0) {
+    html += '<div class="reflection-section"><h3>What you told us</h3>';
+    topReflections.forEach(ref => {
+      html += '<div class="reflection-item">' + ref.text + '</div>';
+    });
+    html += '</div>';
+  }
+
   html += '<p class="result-summary">' + r.summary + '</p>';
 
   html += '<div class="result-section reduces"><h3>What mindfulness may reduce</h3><ul>';
@@ -782,6 +949,7 @@ function showResult() {
   html += '<a href="https://nickxma.github.io/meditation-recommender/">What should I actually practice?</a>';
   html += '</div>';
   html += '<a class="restart-link" onclick="restart()">Take it again</a>';
+  html += '<a class="restart-link" onclick="copyResult()" id="copy-btn" style="margin-top: 8px; display: block;">Share your result</a>';
   html += '</div>';
 
   el.innerHTML = html;
@@ -792,9 +960,21 @@ function restart() {
   currentQ = 0;
   answers = [];
   progressBar.style.width = '0%';
-  document.getElementById('intro').classList.add('active');
-  document.getElementById('result').classList.remove('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (advanceTimeout) {
+    clearTimeout(advanceTimeout);
+    advanceTimeout = null;
+  }
+  showScreen('intro');
+}
+
+function copyResult() {
+  const r = results[lastCategory];
+  const text = '\u201CShould You Get Into Mindfulness?\u201D \u2192 ' + r.tag + '\n\nhttps://nickxma.github.io/mindfulness-fit/';
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Share your result'; }, 2000);
+  }).catch(() => {});
 }
 </script>
 </body>
