@@ -556,13 +556,13 @@ footer a:hover {
   <div class="nav-container">
     <div class="nav-brand">Paradox of Acceptance</div>
     <div class="nav-links">
-      <a href="https://nickxma.github.io/paradox-of-acceptance/">Home</a>
-      <a href="https://nickxma.github.io/meditation-quiz/">Quiz</a>
-      <a href="https://nickxma.github.io/meditation-debates/">Debates</a>
-      <a href="https://nickxma.github.io/meditation-recommender/">Recommender</a>
-      <a href="https://nickxma.github.io/teacher-debates/">Teachers</a>
-      <a href="https://nickxma.github.io/concept-explorer/">Explorer</a>
-      <a href="https://nickxma.github.io/mindfulness-fit/" class="active">Fit</a>
+      <a href="https://paradoxofacceptance.xyz/paradox-of-acceptance/">Home</a>
+      <a href="https://paradoxofacceptance.xyz/meditation-quiz/">Quiz</a>
+      <a href="https://paradoxofacceptance.xyz/meditation-debates/">Debates</a>
+      <a href="https://paradoxofacceptance.xyz/meditation-recommender/">Recommender</a>
+      <a href="https://paradoxofacceptance.xyz/teacher-debates/">Teachers</a>
+      <a href="https://paradoxofacceptance.xyz/concept-explorer/">Explorer</a>
+      <a href="https://paradoxofacceptance.xyz/mindfulness-fit/" class="active">Fit</a>
     </div>
   </div>
 </nav>
@@ -590,7 +590,7 @@ footer a:hover {
 </main>
 
 <footer>
-  Part of the <a href="https://nickxma.github.io/paradox-of-acceptance/">Paradox of Acceptance</a> toolkit. These tools draw on a wide survey of contemplative teachers and traditions.
+  Part of the <a href="https://paradoxofacceptance.xyz/paradox-of-acceptance/">Paradox of Acceptance</a> toolkit. These tools draw on a wide survey of contemplative teachers and traditions.
 </footer>
 
 <script>
@@ -943,10 +943,10 @@ function showResult() {
 
   html += '<div class="links-section"><h3>Keep exploring</h3>';
   html += '<div class="links-grid">';
-  html += '<a href="https://nickxma.github.io/concept-explorer/">The nature of experience</a>';
-  html += '<a href="https://nickxma.github.io/meditation-debates/">5 debates the field can\u2019t settle</a>';
-  html += '<a href="https://nickxma.github.io/meditation-quiz/">What kind of meditator are you?</a>';
-  html += '<a href="https://nickxma.github.io/meditation-recommender/">What should I actually practice?</a>';
+  html += '<a href="https://paradoxofacceptance.xyz/concept-explorer/">The nature of experience</a>';
+  html += '<a href="https://paradoxofacceptance.xyz/meditation-debates/">5 debates the field can\u2019t settle</a>';
+  html += '<a href="https://paradoxofacceptance.xyz/meditation-quiz/">What kind of meditator are you?</a>';
+  html += '<a href="https://paradoxofacceptance.xyz/meditation-recommender/">What should I actually practice?</a>';
   html += '</div>';
   html += '<a class="restart-link" onclick="restart()">Take it again</a>';
   html += '<a class="restart-link" onclick="copyResult()" id="copy-btn" style="margin-top: 8px; display: block;">Share your result</a>';
@@ -969,7 +969,7 @@ function restart() {
 
 function copyResult() {
   const r = results[lastCategory];
-  const text = '\u201CShould You Get Into Mindfulness?\u201D \u2192 ' + r.tag + '\n\nhttps://nickxma.github.io/mindfulness-fit/';
+  const text = '\u201CShould You Get Into Mindfulness?\u201D \u2192 ' + r.tag + '\n\nhttps://paradoxofacceptance.xyz/mindfulness-fit/';
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('copy-btn');
     btn.textContent = 'Copied!';
